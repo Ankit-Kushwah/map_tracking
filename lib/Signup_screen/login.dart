@@ -105,6 +105,7 @@ class _LoginPageState extends State<LoginPage> {
           padding: EdgeInsets.all(16.0),
           child: new Column(
             children: <Widget>[
+              SizedBox(height: 150,),
               _buildTextFields(),
               _buildButtons(),
             ],
@@ -182,14 +183,6 @@ class _LoginPageState extends State<LoginPage> {
                     MaterialPageRoute(builder: (context) => Signup()),
                   );
                 }),
-            new MaterialButton(
-                child: new Text('Map'),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Mappage()),
-                  );
-                }),
           ],
         ),
       );
@@ -219,31 +212,15 @@ class _LoginPageState extends State<LoginPage> {
           barrierDismissible: false, // user must tap button!
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Officer Panel'),
+              title: Text('Invalid Credential'),
               content: Container(
-                child: Text('This Login is only for\n Government official'),
+                child: Text('Please Check Email & Password'),
               ),
               actions: <Widget>[
                 TextButton(
-                  child: Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topCenter,
-                        end: Alignment.bottomCenter,
-                        colors: <Color>[
-                          Color.fromRGBO(4, 170, 176, 1),
-                          Color.fromRGBO(3, 205, 172, 1)
-                        ],
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(10.0),
-                    child: const Text('Login', style: TextStyle(fontSize: 20)),
-                  ),
+                  child:const Text('Login', style: TextStyle(fontSize: 20)),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Mappage()),
-                    );
+                    Navigator.pop(context);
                   },
                 ),
               ],
@@ -258,42 +235,19 @@ class _LoginPageState extends State<LoginPage> {
 
   setdata() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    prefs.setString("Ward_No", responseJson['Officer_Ward']);
     prefs.setString("User_Id", responseJson['User_id']);
     prefs.setString("Name", responseJson['Name']);
+    prefs.setString("ImageName", responseJson['Image']);
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => Mappage(),
+      ),
+          (route) => false,
+    );
 
     // _onLoading();
   }
-  //
-  // void _onLoading() {
-  //   showDialog(
-  //     context: context,
-  //     barrierDismissible: false,
-  //     builder: (BuildContext context) {
-  //       return Dialog(
-  //         child: Container(
-  //           height: MediaQuery.of(context).size.height * .2,
-  //           width: MediaQuery.of(context).size.width * .4,
-  //           child: new Column(
-  //             mainAxisSize: MainAxisSize.max,
-  //             mainAxisAlignment: MainAxisAlignment.center,
-  //             crossAxisAlignment: CrossAxisAlignment.center,
-  //             children: [
-  //               new CircularProgressIndicator(),
-  //               new SizedBox(
-  //                 height: 5.0,
-  //               ),
-  //               new Text("Loading"),
-  //             ],
-  //           ),
-  //         ),
-  //       );
-  //     },
-  //   );
-  //   new Future.delayed(new Duration(seconds: 3), () {
-  //     Navigator.pop(context); //pop dialog
-  //     Navigator.push(context, MaterialPageRoute(builder: (context) => Panel()));
-  //   });
-  // }
+
 }

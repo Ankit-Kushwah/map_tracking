@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 // ignore: avoid_web_libraries_in_flutter
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -9,26 +10,30 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 
-String path ="https://morenanigam.000webhostapp.com/MorenaNigam1/Testing/Testing/";
-String Imagepath ="https://morenanigam.000webhostapp.com/MorenaNigam1/MorenaNigam/upload/";
+String path ="https://morenanigam.000webhostapp.com/MorenaNigam1/Testing/index.php/Testing/";
+String Imagepath ="https://morenanigam.000webhostapp.com/MorenaNigam1/Testing/upload/";
 
 void uploadingData(
     String Name,
     String MobileNo,
     String EmailAddress,
     String Password,
-    XFile base64Image,
-    String fileName) async {
+    String fileName,
+    PickedFile base64image,
+    // File base64image
+
+    ) async {
   var dio = new Dio();
   FormData formData = new FormData.fromMap({
     "Name": Name,
-    "CitizenMobileNo": MobileNo,
-    "CitizenAddress": EmailAddress,
-    "CitizenWardNo": Password,
-    "image": base64Image,
+    "MobileNo": MobileNo,
+    "EmailAddress": EmailAddress,
+    "Password": Password,
+    "image": base64image,
     "name": fileName
   });
   try {
+    print(path + "register?Name=$Name&MobileNo=$MobileNo&EmailAddress=$EmailAddress&Password=$Password&name=$fileName&image=$base64image");
     Response response1 = await dio.post(path + "register", data: formData);
 
     var userdata = json.decode(response1.data.toString());

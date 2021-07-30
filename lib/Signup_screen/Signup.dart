@@ -1,14 +1,12 @@
-// import 'package:dio/dio.dart';
 import 'dart:convert';
 import 'dart:io';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_application_1/login.dart';
-// import 'package:flutter_application_1/services/Services.dart';
-// import 'package:flutter_application_1/status.dart';
-// import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:map_tracking/services/Services.dart';
+
+import 'login.dart';
 
 class Signup extends StatefulWidget {
   @override
@@ -17,12 +15,13 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   TextEditingController _Name,_MobileNo,_EmailAddress,_Password;
+  PickedFile base64Image;
   final ImagePicker _picker = ImagePicker();
-  XFile file;
   String fileName = "";
   String status = '';
-  XFile base64Image;
-  File tmpFile;
+  // File base64Image;
+  File file;
+  // File tmpFile;
   String imageName = '';
   var errMessage = '';
   @override
@@ -38,18 +37,6 @@ class _SignupState extends State<Signup> {
     _Password = new TextEditingController();
   }
 
-  // List<DropdownMenuItem<Issues>> buildDropdownMenuItems(List issues) {
-  //   List<DropdownMenuItem<Issues>> items = List();
-  //   for (Issues issue in issues) {
-  //     items.add(
-  //       DropdownMenuItem(
-  //         value: issue,
-  //         child: Text(issue.name),
-  //       ),
-  //     );
-  //   }
-  //   return items;
-  // }
 
   var datauser = "";
 
@@ -191,15 +178,16 @@ class _SignupState extends State<Signup> {
                                   _MobileNo.text,
                                   _EmailAddress.text,
                                   _Password.text,
-                                  base64Image,
-                                  fileName);
+                                  fileName,
+                                  base64Image
+                                  );
 
                               _dailog();
 
                               Navigator.pop(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Signup()));
+                                      builder: (context) => LoginPage()));
                             }
                           })
                     ],
@@ -224,7 +212,7 @@ class _SignupState extends State<Signup> {
               child: Column(
                 children: [
                   Text(
-                    'You are registered.\n Please ',
+                    'You signUp successfully.\n Please signIn to continue.',
                     style: TextStyle(fontSize: 18, color: Colors.greenAccent),
                   )
                 ],
@@ -235,14 +223,16 @@ class _SignupState extends State<Signup> {
   }
 
   chooseImage() async {
-    file = await _picker.pickImage(source: ImageSource.gallery);
-    base64Image = file;
+
+    final pickedFile = await _picker.getImage(source: ImageSource.gallery);
 
     setState(() {
-      if (null == file) {
+      base64Image= pickedFile;
+      if (pickedFile==null) {
         print('No image selected.');
       } else {
-        fileName = file.path;
+        fileName = pickedFile.path.split('/').last;
+        print("fileName");
         print(fileName);
       }
     });
@@ -250,3 +240,5 @@ class _SignupState extends State<Signup> {
 
   setStatus(param0) {}
 }
+
+

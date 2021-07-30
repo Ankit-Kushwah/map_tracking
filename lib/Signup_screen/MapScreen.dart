@@ -5,8 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:location/location.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:map_tracking/services/Services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'ProfileScreen.dart';
+import 'login.dart';
 
 
 
@@ -35,6 +37,10 @@ class _MappageState extends State<Mappage> {
     zoom: 14.4746,
   );
 
+  String username;
+
+  String imageid;
+
   @override
   void dispose(){
     super.dispose();
@@ -43,24 +49,45 @@ class _MappageState extends State<Mappage> {
     }
   }
 
-  String currentcountry;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
-  var currentPosition;
-
+    getdata();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight:80.0,
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             CircleAvatar(
               radius:30.0 ,
-                backgroundImage:NetworkImage(Imagepath)
-
+                backgroundImage:NetworkImage(Imagepath+imageid)
+//"scaled_0d3d1d99-ee78-48b1-bff8-f7d9230cffea3944150467549545739.jpg"
             ),
             SizedBox(width: 10),
-            Text("User NAme"),
+            Text(username),
+            SizedBox(width: 100),
+            MaterialButton(
+                child: Text('Logout',style: TextStyle(fontSize: 20,color: Colors.white)),
+                onPressed:()async{
+                  SharedPreferences prefs= await SharedPreferences.getInstance();
+                  prefs.remove('Image');
+                  prefs.remove('Name');
+
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (BuildContext context) => LoginPage(),
+                    ),
+                        (route) => false,
+                  );
+
+                } )
           ],
         ),
       ),
@@ -85,10 +112,10 @@ class _MappageState extends State<Mappage> {
       bottomNavigationBar:TextButton(
         child: Container(
           decoration: const BoxDecoration(
-            color: Colors.greenAccent,
+            color: Colors.blueAccent,
           ),
           padding: const EdgeInsets.all(10.0),
-          child: const Text('Profile', style: TextStyle(fontSize: 20)),
+          child: const Text('Profile', style: TextStyle(fontSize: 20,color: Colors.white)),
         ),
         onPressed: () {
           Navigator.push(
@@ -161,6 +188,16 @@ class _MappageState extends State<Mappage> {
           fillColor: Colors.black26
       );
     });
+  }
+
+  void getdata() async{
+
+    SharedPreferences prefs= await SharedPreferences.getInstance();
+    setState(() {
+      username=prefs.getString('Name')??"";
+      imageid=prefs.getString('Image')??"";
+    });
+
   }
 
 
