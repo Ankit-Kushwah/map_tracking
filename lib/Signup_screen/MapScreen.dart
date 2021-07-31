@@ -53,8 +53,8 @@ class _MappageState extends State<Mappage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-
     getdata();
+    print("working");
   }
   @override
   Widget build(BuildContext context) {
@@ -195,7 +195,8 @@ class _MappageState extends State<Mappage> {
     SharedPreferences prefs= await SharedPreferences.getInstance();
     setState(() {
       username=prefs.getString('Name')??"";
-      imageid=prefs.getString('Image')??"";
+      imageid=prefs.getString('ImageName')??"";
+      print(imageid);
     });
 
   }

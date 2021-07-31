@@ -13,13 +13,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 String path ="https://morenanigam.000webhostapp.com/MorenaNigam1/Testing/index.php/Testing/";
 String Imagepath ="https://morenanigam.000webhostapp.com/MorenaNigam1/Testing/upload/";
 
-void uploadingData(
+ uploadingData(
     String Name,
     String MobileNo,
     String EmailAddress,
     String Password,
     String fileName,
-    PickedFile base64image,
+    String base64image,
     // File base64image
 
     ) async {
@@ -38,16 +38,15 @@ void uploadingData(
 
     var userdata = json.decode(response1.data.toString());
 
-    print(userdata.toString());
-    return userdata['id'];
+    return userdata;
   } catch (e) {
-    print('Ankit' + e.toString());
+    print('Ankit ' + e.toString());
   }
 }
 
 remove(context) async {
   final prefs = await SharedPreferences.getInstance();
-  prefs.remove("Ward_No");
+
   prefs.remove("User_Id");
   prefs.remove("Name");
   Navigator.pushAndRemoveUntil(

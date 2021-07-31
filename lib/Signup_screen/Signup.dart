@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io' as Io;
 import 'dart:io';
 
 import 'package:image_picker/image_picker.dart';
@@ -15,15 +16,17 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup> {
   TextEditingController _Name,_MobileNo,_EmailAddress,_Password;
-  PickedFile base64Image;
+  String base64Image;
   final ImagePicker _picker = ImagePicker();
   String fileName = "";
   String status = '';
   // File base64Image;
-  File file;
-  // File tmpFile;
+  XFile file;
+  String tmpFile;
   String imageName = '';
   var errMessage = '';
+
+  var val='true';
   @override
   void initState() {
     super.initState();
@@ -173,7 +176,7 @@ class _SignupState extends State<Signup> {
                             if (_formKey.currentState.validate()) {
                               // If the form is valid, display a Snackbar.
 
-                              uploadingData(
+                            uploadingData(
                                   _Name.text,
                                   _MobileNo.text,
                                   _EmailAddress.text,
@@ -182,12 +185,11 @@ class _SignupState extends State<Signup> {
                                   base64Image
                                   );
 
-                              _dailog();
+                                Navigator.pop(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LoginPage()));
 
-                              Navigator.pop(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginPage()));
                             }
                           })
                     ],
@@ -200,38 +202,21 @@ class _SignupState extends State<Signup> {
   }
 
 
-
-  _dailog() {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            content: Container(
-              height: MediaQuery.of(context).size.height * 0.3,
-              width: MediaQuery.of(context).size.width * 0.7,
-              child: Column(
-                children: [
-                  Text(
-                    'You signUp successfully.\n Please signIn to continue.',
-                    style: TextStyle(fontSize: 18, color: Colors.greenAccent),
-                  )
-                ],
-              ),
-            ),
-          );
-        });
-  }
-
   chooseImage() async {
 
-    final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    // final pickedFile = await _picker.getImage(source: ImageSource.gallery);
+    file = await _picker.pickImage(source: ImageSource.gallery);
+
+     // tmpFile = file.path;
+    final bytes = Io.File(file.path).readAsBytesSync();
+
+    base64Image = base64Encode(bytes);
 
     setState(() {
-      base64Image= pickedFile;
-      if (pickedFile==null) {
+      if (file==null) {
         print('No image selected.');
       } else {
-        fileName = pickedFile.path.split('/').last;
+        fileName = file.path.split('/').last;
         print("fileName");
         print(fileName);
       }
