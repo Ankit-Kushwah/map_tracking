@@ -202,9 +202,6 @@ class _LoginPageState extends State<LoginPage> {
       responseJson = json.decode(res.data.toString());
     });
 
-    print(responseJson.toString());
-    print(responseJson['status']);
-
     setState(() {
       if (responseJson['status'] != true) {
         showDialog(

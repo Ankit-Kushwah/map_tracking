@@ -54,7 +54,7 @@ class _MappageState extends State<Mappage> {
     // TODO: implement initState
     super.initState();
     getdata();
-    print("working");
+
   }
   @override
   Widget build(BuildContext context) {
@@ -196,7 +196,7 @@ class _MappageState extends State<Mappage> {
     setState(() {
       username=prefs.getString('Name')??"";
       imageid=prefs.getString('ImageName')??"";
-      print(imageid);
+
     });
 
   }

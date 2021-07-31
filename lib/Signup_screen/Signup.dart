@@ -217,8 +217,6 @@ class _SignupState extends State<Signup> {
         print('No image selected.');
       } else {
         fileName = file.path.split('/').last;
-        print("fileName");
-        print(fileName);
       }
     });
   }

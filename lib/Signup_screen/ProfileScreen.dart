@@ -20,11 +20,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final response = await http.get(Uri.parse("https://picsum.photos/v2/list"));
     var res = jsonDecode(response.body);
 
-    print(" Return");
-    print(res);
-    print(res.length);
-
-
 setState(() {
   for (int i = 0; i < res.length; i++) {
     if (res[i]['id'] == "997") {
@@ -33,7 +28,6 @@ setState(() {
       cwigth = res[i]['width'].toString();
       cheight = res[i]['height'].toString();
       down = res[i]['download_url'];
-      print("Ankit "+auther);
 
     }
     else if (i == res.length-1) {
@@ -42,8 +36,6 @@ setState(() {
       cwigth = res[i]['width'].toString();
       cheight = res[i]['height'].toString();
       down = res[i]['download_url'];
-      print("Ankit "+auther);
-      print("Ankit "+down);
     }
   }
 

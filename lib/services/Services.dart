@@ -33,14 +33,13 @@ String Imagepath ="https://morenanigam.000webhostapp.com/MorenaNigam1/Testing/up
     "name": fileName
   });
   try {
-    print(path + "register?Name=$Name&MobileNo=$MobileNo&EmailAddress=$EmailAddress&Password=$Password&name=$fileName&image=$base64image");
     Response response1 = await dio.post(path + "register", data: formData);
 
     var userdata = json.decode(response1.data.toString());
 
     return userdata;
   } catch (e) {
-    print('Ankit ' + e.toString());
+    print( e.toString());
   }
 }
 
